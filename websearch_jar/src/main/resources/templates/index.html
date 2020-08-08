@@ -1,0 +1,98 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Home</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="Photo-Hub Responsive web template, Bootstrap Web Templates, Flat Web Templates, Andriod Compatible web template, 
+Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyErricsson, Motorola web design" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<link href="/css/bootstrap.css" rel='stylesheet' type='text/css' />
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<!-- Custom Theme files -->
+<link href="/css/style.css" rel='stylesheet' type='text/css' />
+<!-- Custom Theme files -->
+<!--webfont-->
+<link href='http://fonts.useso.com/css?family=Quicksand:300,400,700' rel='stylesheet' type='text/css'>
+<link href='http://fonts.useso.com/css?family=Open+Sans:300,400,600,700,800' rel='stylesheet' type='text/css'>
+<script type="text/javascript" src="/js/jquery-1.11.1.min.js"></script>
+<script src="/js/menu_jquery.js"></script>
+</head>
+<body>
+	<div class="header" style="background:#2B98EC;">
+      <div class="container"> 
+  	     <div class="logo">
+			<h1><a href="#">Twitter Search</a></h1>
+		 </div>
+		 <div class="top_right">
+				<ul>
+					<li>UCR CS172</li>
+				</ul>
+	     </div>
+		 <div class="clearfix"></div>
+		</div>
+	</div>
+	<div class="banner">
+		<div class="container">
+			<div class="span_1_of_1">
+				<h2> twitter   search <br>  comment  on  current  hot events  </h2>
+			    <div class="search">
+			      <ul class="nav1">
+		            <li id="search">
+						<form action="context" method="get" id="context" onkeydown="if(event.keyCode===13)return false;" >
+							<input type="text" style="background:#2B98EC;" id="search_text" name="search_text"  placeholder="Search" onkeydown="if(event.keyCode===13) getElements();"/>
+							<input type="button" name="search_button" id="search_button" onclick="getElements()">
+						</form>
+					</li>
+					<li id="options">
+						<a href="#" id="show">Lueune</a>
+						<ul class="subnav">
+							<li><a href="#" onclick="getButtonName()" id="option1">location</a></li>
+						</ul>
+					</li>
+	              </ul>
+	            </div>
+			</div>
+		</div>
+	</div>
+	
+</body>
+
+<script type="text/javascript">
+	var xx = "notfound"
+	var yy = "notfound"
+	if (navigator.geolocation) {
+		navigator.geolocation.getCurrentPosition((position) => {
+			xx = position.coords.longitude;
+			yy = position.coords.latitude;
+		});
+	}else {
+		alert("Geolocation is not supported by this browser.")
+	}
+	function getElements()
+	{
+		var show1 = document.getElementById("show").innerText;
+		var searchcontext = document.getElementById("search_text").value;
+		$.ajax({
+			type: "GET",
+			url: "/context",
+			async:false,
+			data: {search_text: searchcontext, search_button: show1, longtitude: xx, latitude: yy},
+			success: function (data) {
+				if(data) {
+					window.location.href = "/context?search_text="+ searchcontext +"&search_button=" + show1+"&curPage=1&longtitude=" + xx + "&latitude=" + yy;
+				}
+			}
+		})
+	}
+
+	function getButtonName(){
+		var context = document.getElementById("option1").innerText;
+		var botton = document.getElementById("show").innerText;
+
+		document.getElementById("show").innerText = context;
+		document.getElementById("option1").innerText = botton;
+	}
+</script>
+
+</html>

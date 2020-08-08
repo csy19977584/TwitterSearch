@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>Map</title>
+    <link rel="stylesheet" href="https://js.arcgis.com/4.15/esri/themes/light/main.css">
+    <script src="https://js.arcgis.com/4.15/"></script>
+    <style>
+        html, body, #viewDiv {
+            padding: 0;
+            margin: 0;
+            height: 80%;
+            width: 80%;
+        }
+    </style>
+    <script>
+        var userlng = [[${userlng}]];
+        var userlat = [[${userlat}]];
+        var lat = [[${lat}]];
+        var lng = [[${lng}]];
+        var coordinate_user=[userlng, userlat]
+        var coordinate_twitter=[lng, lat]
+
+        require([
+            "esri/Map",
+            "esri/views/MapView",
+            "esri/Graphic",
+            "esri/layers/GraphicsLayer"
+        ], function(Map, MapView, Graphic, GraphicsLayer) {
+
+            var map = new Map({
+                basemap: "hybrid"
+            });
+
+            var view = new MapView({
+                container: "viewDiv",
+                map: map,
+                center: coordinate_user, // longitude, latitude
+                zoom: 8
+            });
+
+            var graphicsLayer = new GraphicsLayer();
+            map.add(graphicsLayer);
+
+            var point_user = {
+                type: "point",
+                longitude: coordinate_user[0],
+                latitude: coordinate_user[1]
+            };
+            var simpleMarkerSymbol_user = {
+                type: "simple-marker",
+                color: [226, 119, 40],  // orange
+                outline: {
+                    color: [255, 255, 255], // white
+                    width: 1
+                }
+            };
+            var pointGraphic_user = new Graphic({
+                geometry: point_user,
+                symbol: simpleMarkerSymbol_user
+            });
+
+            var point_twitter = {
+                type: "point",
+                longitude: coordinate_twitter[0],
+                latitude: coordinate_twitter[1]
+            };
+            var simpleMarkerSymbol_twitter = {
+                type: "simple-marker",
+                color: [0, 0, 255],  // blue
+                outline: {
+                    color: [255, 255, 255], // white
+                    width: 1
+                }
+            };
+            var pointGraphic_twitter = new Graphic({
+                geometry: point_twitter,
+                symbol: simpleMarkerSymbol_twitter
+            });
+
+
+            graphicsLayer.add(pointGraphic_user,);
+            graphicsLayer.add(pointGraphic_twitter);
+        });
+
+    </script>
+</head>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div>user's latitude:</div>
+<div id = "userlatitude" th:text="${userlat}"></div>
+
+<div>user's longtitude:</div>
+<div id = "userlongtitude" th:text="${userlng}"></div>
+
+<div>post's latitude:</div>
+<div id = "latitude" th:text="${lat}"></div>
+
+<div>post's longtitude:</div>
+<div id = "longtitude" th:text="${lng}"></div>
+
+<div id="viewDiv"></div>
+</body>
+</html>
